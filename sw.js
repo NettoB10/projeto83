@@ -3,7 +3,7 @@ const CACHE_NAME = "projeto83-v1";
 const FILES = [
   "index.html",
   "manifest.json",
-  "icon.svg"
+  "icon-projeto-caverna.png"
 ];
 
 self.addEventListener("install", event => {
