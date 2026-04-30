@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <meta name="theme-color" content="#020617">
+  <link rel="manifest" href="manifest.json">
+  <title>Projeto 83</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      color: #020617;
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at top left, #e2e8f0, transparent 35%),
+        linear-gradient(135deg, #020617 0%, #0f172a 38%, #e2e8f0 38%, #f8fafc 100%);
+    }
+
+    .app {
+      max-width: 460px;
+      margin: 0 auto;
+      padding: 14px 14px 34px;
+    }
+
+    .top {
+      color: white;
+      padding: 12px 4px 4px;
+    }
+
+    .row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .badge {
+      border-radius: 999px;
+      padding: 7px 12px;
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: .06em;
+      background: rgba(255,255,255,.86);
+      color: #1e293b;
+    }
+
+    .top h1 {
+      font-size: 42px;
+      line-height: .95;
+      margin: 20px 0 8px;
+      letter-spacing: -1.5px;
+    }
+
+    .top p {
+      color: rgba(255,255,255,.75);
+      font-size: 14px;
+      margin: 0;
+    }
+
+    .card {
+      border-radius: 28px;
+      border: 1px solid rgba(255,255,255,.7);
+      background: rgba(255,255,255,.88);
+      padding: 16px;
+      margin-top: 14px;
+      box-shadow: 0 18px 45px rgba(15,23,42,.13);
+      backdrop-filter: blur(12px);
+      overflow: hidden;
+    }
+
+    .hero {
+      padding: 0;
+    }
+
+    .heroHead {
+      background: #020617;
+      color: white;
+      padding: 20px;
+    }
+
+    .heroHead p {
+      margin: 0 0 6px;
+      color: rgba(255,255,255,.6);
+      font-size: 14px;
+    }
+
+    .heroHead h2 {
+      margin: 0;
+      font-size: 26px;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      padding: 14px;
+      text-align: center;
+    }
+
+    .stat {
+      border-radius: 22px;
+      background: linear-gradient(135deg, #f1f5f9, #fff);
+      padding: 12px 6px;
+    }
+
+    .stat.dark {
+      background: #020617;
+      color: white;
+    }
+
+    .stat small {
+      display: block;
+      color: #64748b;
+      font-weight: 800;
+      font-size: 11px;
+      margin-bottom: 4px;
+    }
+
+    .stat.dark small {
+      color: rgba(255,255,255,.62);
+    }
+
+    .stat strong {
+      font-size: 18px;
+      font-weight: 950;
+    }
+
+    .muted {
+      color: #94a3b8;
+      font-size: 11px;
+      font-weight: 950;
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      margin: 0;
+    }
+
+    .dayTitle {
+      font-size: 22px;
+      font-weight: 950;
+      margin: 3px 0;
+    }
+
+    .mini {
+      background: #020617;
+      color: white;
+      padding: 14px 18px;
+      border-radius: 24px;
+      text-align: center;
+      box-shadow: 0 10px 25px rgba(2,6,23,.25);
+      min-width: 82px;
+    }
+
+    .mini small {
+      color: rgba(255,255,255,.6);
+      display: block;
+    }
+
+    .mini strong {
+      font-size: 19px;
+    }
+
+    h2 {
+      margin: 0 0 12px;
+      font-size: 22px;
+      font-weight: 950;
+      letter-spacing: -.4px;
+    }
+
+    input,
+    textarea {
+      width: 100%;
+      border: 0;
+      background: #f1f5f9;
+      border-radius: 22px;
+      padding: 14px;
+      font-size: 16px;
+      font-weight: 700;
+      outline: none;
+      box-shadow: inset 0 0 0 1px #e2e8f0;
+    }
+
+    input:focus,
+    textarea:focus {
+      box-shadow: inset 0 0 0 2px #020617;
+    }
+
+    .dateInput {
+      margin-top: 14px;
+    }
+
+    .circle {
+      width: 78px;
+      height: 78px;
+      border-radius: 50%;
+      background: #020617;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      font-weight: 950;
+      box-shadow: 0 16px 28px rgba(2,6,23,.25);
+    }
+
+    .bar {
+      margin-top: 14px;
+      height: 15px;
+      background: #e2e8f0;
+      border-radius: 999px;
+      overflow: hidden;
+      box-shadow: inset 0 2px 6px rgba(15,23,42,.12);
+    }
+
+    .fill {
+      height: 100%;
+      width: 0;
+      background: linear-gradient(90deg, #020617, #475569);
+      border-radius: 999px;
+      transition: width .25s ease;
+    }
+
+    .summary {
+      background: linear-gradient(135deg, #020617, #1e293b);
+      color: white;
+      border-radius: 26px;
+      padding: 15px;
+      font-size: 14px;
+    }
+
+    .summary p {
+      margin: 6px 0;
+    }
+
+    .summary b {
+      color: rgba(255,255,255,.58);
+    }
+
+    .meal {
+      margin-top: 10px;
+      border-radius: 24px;
+      border: 1px solid #e2e8f0;
+      background: linear-gradient(135deg, #fff, #f8fafc);
+      padding: 14px;
+      box-shadow: 0 2px 10px rgba(15,23,42,.05);
+    }
+
+    .mealHead {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+
+    .time {
+      background: #020617;
+      color: white;
+      padding: 7px 10px;
+      border-radius: 15px;
+      font-size: 12px;
+      font-weight: 950;
+      white-space: nowrap;
+    }
+
+    .mealTitle {
+      font-weight: 950;
+      text-align: right;
+    }
+
+    .meal p {
+      margin: 0;
+      color: #334155;
+      line-height: 1.45;
+      font-size: 14px;
+    }
+
+    .task {
+      width: 100%;
+      text-align: left;
+      border: 0;
+      margin-top: 9px;
+      border-radius: 24px;
+      padding: 15px;
+      background: white;
+      color: #020617;
+      font-size: 15px;
+      font-weight: 850;
+      box-shadow: 0 0 0 1px #e2e8f0, 0 4px 10px rgba(15,23,42,.04);
+    }
+
+    .task.done {
+      background: #020617;
+      color: white;
+      text-decoration: line-through;
+      box-shadow: 0 10px 25px rgba(2,6,23,.20);
+    }
+
+    .weight {
+      display: flex;
+      gap: 8px;
+    }
+
+    .weight input {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .save {
+      border: 0;
+      background: #020617;
+      color: white;
+      border-radius: 22px;
+      padding: 0 18px;
+      font-weight: 950;
+      font-size: 15px;
+      box-shadow: 0 12px 22px rgba(2,6,23,.24);
+    }
+
+    textarea {
+      min-height: 110px;
+      resize: vertical;
+      font-weight: 650;
+      line-height: 1.4;
+    }
+
+    .tip {
+      margin-top: 10px;
+      border-radius: 18px;
+      background: #f1f5f9;
+      padding: 12px;
+      color: #64748b;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .clear {
+      width: 100%;
+      margin-top: 14px;
+      border: 1px solid rgba(255,255,255,.7);
+      background: rgba(255,255,255,.84);
+      border-radius: 24px;
+      padding: 15px;
+      font-size: 15px;
+      font-weight: 950;
+      box-shadow: 0 18px 45px rgba(15,23,42,.10);
+    }
+
+    .warning {
+      margin-top: 14px;
+      background: rgba(2,6,23,.92);
+      color: rgba(255,255,255,.72);
+      border-radius: 24px;
+      padding: 15px;
+      text-align: center;
+      font-size: 12px;
+      font-weight: 750;
+    }
+
+    .install {
+      margin-top: 14px;
+      background: rgba(255,255,255,.72);
+      border-radius: 24px;
+      padding: 14px;
+      font-size: 12px;
+      font-weight: 750;
+      color: #334155;
+      line-height: 1.45;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="app">
+    <section class="top">
+      <div class="row">
+        <span class="badge">MEU PLANO</span>
+        <span class="badge">🔥 PREMIUM</span>
+      </div>
+      <h1>Projeto 83</h1>
+      <p>Seu painel premium de evolução: bike, jejum e cardápio diário</p>
+    </section>
+
+    <section class="card hero">
+      <div class="heroHead">
+        <p>Plano 98 kg → 83 kg</p>
+        <h2>Projeto 83</h2>
+      </div>
+
+      <div class="stats">
+        <div class="stat">
+          <small>Perdido</small>
+          <strong id="perdido">0.0 kg</strong>
+        </div>
+
+        <div class="stat">
+          <small>Faltam</small>
+          <strong id="faltam">15.0 kg</strong>
+        </div>
+
+        <div class="stat dark">
+          <small>Meta</small>
+          <strong>83 kg</strong>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="row">
+        <div>
+          <p class="muted">📅 Dia selecionado</p>
+          <div class="dayTitle" id="nomeDia"></div>
+          <div style="font-weight:700;color:#64748b" id="dataFmt"></div>
+        </div>
+
+        <div class="mini">
+          <small>Dia</small>
+          <strong id="diaMini"></strong>
+        </div>
+      </div>
+
+      <input class="dateInput" id="dataInput" type="date">
+    </section>
+
+    <section class="card">
+      <div class="row">
+        <div>
+          <p class="muted">Progresso do dia</p>
+          <h2 id="tarefasFeitas">0/0 tarefas</h2>
+        </div>
+
+        <div class="circle" id="percentual">0%</div>
+      </div>
+
+      <div class="bar">
+        <div class="fill" id="barFill"></div>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="row" style="margin-bottom:12px">
+        <h2 style="margin:0">Plano de hoje</h2>
+        <span class="badge" id="statusPlano" style="background:#020617;color:white">EM ANDAMENTO</span>
+      </div>
+
+      <div class="summary">
+        <p><b>Tipo:</b> <span id="tipo"></span></p>
+        <p><b>Treino:</b> <span id="treino"></span></p>
+        <p><b>Jejum:</b> <span id="jejum"></span></p>
+      </div>
+
+      <div id="cardapio"></div>
+    </section>
+
+    <section class="card">
+      <div class="row" style="margin-bottom:10px">
+        <h2 style="margin:0">Checklist</h2>
+        <span style="color:#94a3b8;font-size:12px;font-weight:900">Toque para marcar</span>
+      </div>
+
+      <div id="tarefas"></div>
+    </section>
+
+    <section class="card">
+      <h2>⚖️ Registrar peso</h2>
+
+      <div class="weight">
+        <input id="pesoInput" inputmode="decimal" placeholder="Ex: 98,0">
+        <button class="save" onclick="salvarPeso()">Salvar</button>
+      </div>
+
+      <div class="tip">
+        Dica: pese segunda de manhã, em jejum, depois de ir ao banheiro.
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Observação do dia</h2>
+      <textarea id="observacao" placeholder="Ex: joelho ok, senti fome, treino leve..."></textarea>
+    </section>
+
+    <button class="clear" onclick="limparDia()">🔄 Limpar apenas este dia</button>
+
+    <div class="warning">
+      Bike sem carga pesada. Se o joelho doer, reduza ou pare.
+    </div>
+
+    <div class="install">
+      <b>Como instalar:</b><br>
+      Android/Chrome: abra no navegador, toque nos três pontinhos e escolha “Adicionar à tela inicial”.<br><br>
+      iPhone/Safari: toque em compartilhar e escolha “Adicionar à Tela de Início”.
+    </div>
+  </div>
+
+  <script>
+    const STORAGE = "projeto83_dados_v1";
+
+    const dias = [
+      "Domingo",
+      "Segunda",
+      "Terça",
+      "Quarta",
+      "Quinta",
+      "Sexta",
+      "Sábado"
+    ];
+
+    const plano = {
+      "Segunda": {
+        tipo: "Bike moderada + pesagem",
+        treino: "35 min bike moderada",
+        jejum: "20:00 até 12:00 do outro dia",
+        cardapio: [
+          ["07:00", "Ao acordar", "500 ml de água + café sem açúcar. Pesar em jejum depois de ir ao banheiro."],
+          ["08:00", "Treino", "Bike 35 min moderada. Ritmo firme, mas sem dor no joelho."],
+          ["12:00", "Almoço / primeira refeição", "200 g de coxa/sobrecoxa sem pele na airfryer + 3 ovos inteiros + 150 g de arroz cozido OU 200 g de batata + salada/legumes à vontade."],
+          ["15:30", "Lanche", "300 ml de leite + 2 ovos cozidos."],
+          ["19:00", "Jantar / última refeição", "180 a 200 g de carne moída OU coxa/sobrecoxa sem pele + 2 ovos + salada/legumes. Se estiver com fome, até 100 g de arroz cozido."],
+          ["20:00", "Início do jejum", "Fechar alimentação. Só água, café sem açúcar ou chá sem açúcar."]
+        ],
+        tarefas: [
+          ["agua", "💧 Beber 500 ml de água ao acordar"],
+          ["peso", "⚖️ Registrar peso da semana"],
+          ["bike", "🚲 08:00 — Bike 35 min moderada"],
+          ["ref1", "🍽️ 12:00 — Primeira refeição"],
+          ["ref2", "🥛 15:30 — Leite + ovos"],
+          ["ref3", "🍽️ 19:00 — Última refeição"],
+          ["jejum", "🌙 20:00 — Iniciar jejum"]
+        ]
+      },
+
+      "Terça": {
+        tipo: "Bike leve",
+        treino: "30 min bike leve",
+        jejum: "20:00 até quinta 12:00, por causa do jejum de quarta",
+        cardapio: [
+          ["07:00", "Ao acordar", "500 ml de água + café sem açúcar."],
+          ["08:00", "Treino", "Bike 30 min leve. Não forçar para chegar bem no jejum de quarta."],
+          ["12:00", "Primeira refeição", "200 g de coxa/sobrecoxa sem pele OU frango + 3 ovos + 150 g de arroz cozido OU 200 g de batata + salada."],
+          ["15:30", "Lanche", "300 ml de leite + 2 ovos cozidos."],
+          ["19:00", "Última refeição antes do jejum longo", "200 g de carne moída OU coxa/sobrecoxa sem pele + 2 ovos + salada. Pode usar 100 g de arroz cozido se quiser segurar melhor a fome."],
+          ["20:00", "Começa o jejum de quarta", "A partir daqui começa o jejum longo. Água, café sem açúcar e chá sem açúcar liberados."]
+        ],
+        tarefas: [
+          ["agua", "💧 Beber 500 ml de água ao acordar"],
+          ["bike", "🚲 08:00 — Bike 30 min leve"],
+          ["ref1", "🍽️ 12:00 — Primeira refeição"],
+          ["ref2", "🥛 15:30 — Lanche"],
+          ["ref3", "🍽️ 19:00 — Última refeição sem exagero"],
+          ["jejum", "🌙 20:00 — Começar jejum de quarta"]
+        ]
+      },
+
+      "Quarta": {
+        tipo: "Jejum total",
+        treino: "Descanso ou 20 min bike bem leve",
+        jejum: "Jejum o dia todo",
+        cardapio: [
+          ["07:00", "Ao acordar", "500 ml de água. Café sem açúcar liberado."],
+          ["08:00", "Treino opcional", "Preferência: descanso. Se quiser, só 20 min de bike muito leve, sem carga."],
+          ["12:00", "Meio do dia", "Continuar em jejum. Água, café sem açúcar, chá sem açúcar ou água com gás sem açúcar."],
+          ["15:30", "Tarde", "Continuar em jejum. Se sentir dor de cabeça leve, pode usar uma pitada pequena de sal na água."],
+          ["19:00", "Noite", "Continuar em jejum. Evitar treino forte e evitar qualquer esforço que piore o joelho."],
+          ["Atenção", "Segurança", "Se tiver tontura forte, tremedeira, fraqueza intensa ou mal-estar forte, interrompa o jejum com uma refeição leve."]
+        ],
+        tarefas: [
+          ["agua", "💧 Beber água ao acordar"],
+          ["cafe", "☕ Café/chá sem açúcar, se quiser"],
+          ["jejum_manha", "🌙 Manhã em jejum"],
+          ["bike", "🚲 Descanso ou 20 min bike muito leve"],
+          ["jejum_tarde", "🌙 Tarde em jejum"],
+          ["jejum_noite", "🌙 Noite em jejum"]
+        ]
+      },
+
+      "Quinta": {
+        tipo: "Volta normal após jejum",
+        treino: "35 min bike moderada",
+        jejum: "20:00 até 12:00 do outro dia",
+        cardapio: [
+          ["07:00", "Ao acordar", "500 ml de água + café sem açúcar. Sem compensar o jejum com exagero depois."],
+          ["08:00", "Treino", "Bike 35 min moderada. Se acordar fraco do jejum, faça só 20 a 25 min leve."],
+          ["12:00", "Quebra do jejum", "200 g de coxa/sobrecoxa sem pele OU carne moída + 3 ovos + 150 g de arroz cozido OU 200 g de batata + salada."],
+          ["15:30", "Lanche", "300 ml de leite + 2 ovos cozidos."],
+          ["19:00", "Última refeição", "180 a 200 g de proteína + 2 ovos + salada/legumes. Evitar exagerar para não anular o jejum."],
+          ["20:00", "Início do jejum", "Água, café sem açúcar ou chá sem açúcar."]
+        ],
+        tarefas: [
+          ["agua", "💧 Beber água ao acordar"],
+          ["bike", "🚲 08:00 — Bike 35 min moderada"],
+          ["ref1", "🍽️ 12:00 — Voltar ao plano normal"],
+          ["ref2", "🥛 15:30 — Leite + ovos"],
+          ["ref3", "🍽️ 19:00 — Última refeição sem compensar"],
+          ["jejum", "🌙 20:00 — Iniciar jejum"]
+        ]
+      },
+
+      "Sexta": {
+        tipo: "Bike leve/moderada",
+        treino: "30 min bike leve/moderada",
+        jejum: "20:00 até 12:00 do outro dia",
+        cardapio: [
+          ["07:00", "Ao acordar", "500 ml de água + café sem açúcar."],
+          ["08:00", "Treino", "Bike 30 min leve/moderada. Sem carga pesada no joelho."],
+          ["12:00", "Primeira refeição", "200 g de coxa/sobrecoxa sem pele OU carne moída + 3 ovos + 150 g de arroz cozido OU 200 g de batata + salada."],
+          ["15:30", "Lanche", "300 ml de leite + 2 ovos cozidos."],
+          ["19:00", "Última refeição", "180 a 200 g de proteína + 2 ovos + salada/legumes. Arroz opcional até 100 g cozido."],
+          ["20:00", "Início do jejum", "Fechar alimentação."]
+        ],
+        tarefas: [
+          ["agua", "💧 Beber água ao acordar"],
+          ["bike", "🚲 08:00 — Bike 30 min leve/moderada"],
+          ["ref1", "🍽️ 12:00 — Primeira refeição"],
+          ["ref2", "🥛 15:30 — Lanche"],
+          ["ref3", "🍽️ 19:00 — Última refeição"],
+          ["jejum", "🌙 20:00 — Iniciar jejum"]
+        ]
+      },
+
+      "Sábado": {
+        tipo: "Bike longa leve",
+        treino: "45 a 60 min bike leve",
+        jejum: "20:00 até 12:00 do outro dia",
+        cardapio: [
+          ["07:00", "Ao acordar", "500 ml de água + café sem açúcar."],
+          ["08:00", "Treino", "Bike 45 a 60 min leve. Ritmo confortável. Se o joelho reclamar, parar."],
+          ["12:00", "Primeira refeição", "200 g de coxa/sobrecoxa sem pele OU carne moída + 3 ovos + 150 g de arroz cozido OU 200 g de batata + salada."],
+          ["15:30", "Lanche", "300 ml de leite + 2 ovos. Se quiser algo diferente, pode colocar 1 banana, mas só se o peso estiver caindo bem."],
+          ["19:00", "Última refeição", "180 a 200 g de proteína + 2 ovos + salada. Evitar transformar sábado em dia livre completo."],
+          ["20:00", "Início do jejum", "Água, café sem açúcar ou chá sem açúcar."]
+        ],
+        tarefas: [
+          ["agua", "💧 Beber água ao acordar"],
+          ["bike", "🚲 Bike 45 a 60 min leve"],
+          ["ref1", "🍽️ 12:00 — Primeira refeição"],
+          ["ref2", "🥛 15:30 — Lanche"],
+          ["ref3", "🍽️ 19:00 — Última refeição"],
+          ["jejum", "🌙 20:00 — Iniciar jejum"]
+        ]
+      },
+
+      "Domingo": {
+        tipo: "Descanso ou bike leve",
+        treino: "Descanso ou 20 a 30 min bike bem leve",
+        jejum: "20:00 até 12:00 do outro dia",
+        cardapio: [
+          ["07:00", "Ao acordar", "500 ml de água + café sem açúcar, se quiser."],
+          ["08:00", "Treino", "Descanso ou bike bem leve 20 a 30 min. Sem carga pesada."],
+          ["12:00", "Primeira refeição", "200 g de coxa/sobrecoxa sem pele na airfryer OU 180 g de carne moída + 3 ovos + 150 g de arroz cozido OU 200 g de batata + salada à vontade."],
+          ["15:30", "Lanche", "300 ml de leite + 2 ovos cozidos. Se não tiver fome, pode tirar 1 ovo."],
+          ["19:00", "Última refeição", "180 a 200 g de frango/coxa/sobrecoxa sem pele OU carne moída + 2 ovos + salada/legumes. Arroz só se estiver com muita fome: até 100 g cozido."],
+          ["20:00", "Início do jejum", "Depois desse horário: água, café sem açúcar ou chá sem açúcar."]
+        ],
+        tarefas: [
+          ["agua", "💧 Beber água ao acordar"],
+          ["peso", "⚖️ Registrar peso, se for dia de pesagem"],
+          ["bike", "🚲 Bike leve ou descanso"],
+          ["ref1", "🍽️ 12:00 — Primeira refeição"],
+          ["ref2", "🥛 15:30 — Lanche"],
+          ["ref3", "🍽️ 19:00 — Última refeição"],
+          ["jejum", "🌙 Começar jejum às 20:00"]
+        ]
+      }
+    };
+
+    let dataAtual = hojeISO();
+    let dados = JSON.parse(localStorage.getItem(STORAGE) || "{}");
+
+    function hojeISO() {
+      const d = new Date();
+      const off = d.getTimezoneOffset();
+      return new Date(d.getTime() - off * 60000).toISOString().slice(0, 10);
+    }
+
+    function diaSemana(iso) {
+      const [a, m, d] = iso.split("-").map(Number);
+      return new Date(a, m - 1, d).getDay();
+    }
+
+    function fmt(iso) {
+      const [a, m, d] = iso.split("-");
+      return d + "/" + m + "/" + a;
+    }
+
+    function salvar() {
+      localStorage.setItem(STORAGE, JSON.stringify(dados));
+    }
+
+    function diaDados() {
+      return dados[dataAtual] || {
+        tarefas: {},
+        peso: "",
+        observacao: ""
+      };
+    }
+
+    function render() {
+      const nome = dias[diaSemana(dataAtual)];
+      const p = plano[nome];
+      const dd = diaDados();
+
+      document.getElementById("dataInput").value = dataAtual;
+      document.getElementById("nomeDia").textContent = nome;
+      document.getElementById("dataFmt").textContent = fmt(dataAtual);
+      document.getElementById("diaMini").textContent = nome.slice(0, 3).toUpperCase();
+
+      document.getElementById("tipo").textContent = p.tipo;
+      document.getElementById("treino").textContent = p.treino;
+      document.getElementById("jejum").textContent = p.jejum;
+
+      const feitas = p.tarefas.filter(t => dd.tarefas && dd.tarefas[t[0]]).length;
+      const total = p.tarefas.length;
+      const perc = Math.round((feitas / total) * 100);
+
+      document.getElementById("tarefasFeitas").textContent = feitas + "/" + total + " tarefas";
+      document.getElementById("percentual").textContent = perc + "%";
+      document.getElementById("barFill").style.width = perc + "%";
+      document.getElementById("statusPlano").textContent = perc === 100 ? "CONCLUÍDO" : "EM ANDAMENTO";
+
+      document.getElementById("cardapio").innerHTML = p.cardapio.map(i => `
+        <div class="meal">
+          <div class="mealHead">
+            <span class="time">${i[0]}</span>
+            <span class="mealTitle">${i[1]}</span>
+          </div>
+          <p>${i[2]}</p>
+        </div>
+      `).join("");
+
+      document.getElementById("tarefas").innerHTML = p.tarefas.map(t => `
+        <button class="task ${dd.tarefas && dd.tarefas[t[0]] ? "done" : ""}" onclick="toggleTarefa('${t[0]}')">
+          ${dd.tarefas && dd.tarefas[t[0]] ? "✅" : "⬜"} ${t[1]}
+        </button>
+      `).join("");
+
+      document.getElementById("pesoInput").value = dd.peso || "";
+      document.getElementById("observacao").value = dd.observacao || "";
+
+      const pesos = Object.entries(dados)
+        .filter(e => e[1].peso)
+        .map(e => Number(String(e[1].peso).replace(",", ".")))
+        .filter(n => !isNaN(n));
+
+      if (pesos.length) {
+        const perdido = (pesos[0] - pesos[pesos.length - 1]).toFixed(1);
+        const faltam = Math.max(0, pesos[pesos.length - 1] - 83).toFixed(1);
+
+        document.getElementById("perdido").textContent = perdido + " kg";
+        document.getElementById("faltam").textContent = faltam + " kg";
+      }
+    }
+
+    function ensure() {
+      if (!dados[dataAtual]) {
+        dados[dataAtual] = {
+          tarefas: {},
+          peso: "",
+          observacao: ""
+        };
+      }
+    }
+
+    function toggleTarefa(id) {
+      ensure();
+      dados[dataAtual].tarefas[id] = !dados[dataAtual].tarefas[id];
+      salvar();
+      render();
+    }
+
+    function salvarPeso() {
+      ensure();
+      dados[dataAtual].peso = document.getElementById("pesoInput").value;
+      salvar();
+      render();
+    }
+
+    function limparDia() {
+      delete dados[dataAtual];
+      salvar();
+      render();
+    }
+
+    document.getElementById("dataInput").addEventListener("change", e => {
+      dataAtual = e.target.value;
+      render();
+    });
+
+    document.getElementById("observacao").addEventListener("input", e => {
+      ensure();
+      dados[dataAtual].observacao = e.target.value;
+      salvar();
+    });
+
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("sw.js").catch(() => {});
+    }
+
+    render();
+  </script>
+</body>
+</html>
